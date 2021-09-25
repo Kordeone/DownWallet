@@ -25,7 +25,7 @@ namespace DownWallet.Services
 
         public async Task Add(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken)
         {
-            walletOwnerDto.Password = PasswordHelper.Hash(walletOwnerDto.Password);
+            walletOwnerDto.PasswordHash = PasswordHelper.Hash(walletOwnerDto.PasswordHash);
             var walletOwnerEntity = _mapper.Map<WalletOwner>(walletOwnerDto);
             await _walletOwnerRepository.Add(walletOwnerEntity, cancellationToken);
         }
@@ -46,7 +46,7 @@ namespace DownWallet.Services
         }
         public async Task UpdatePassword(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken)
         {
-            walletOwnerDto.Password = PasswordHelper.Hash(walletOwnerDto.Password);
+            walletOwnerDto.PasswordHash = PasswordHelper.Hash(walletOwnerDto.PasswordHash);
             await Update(walletOwnerDto, cancellationToken);
         }
         public async Task Delete(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken)

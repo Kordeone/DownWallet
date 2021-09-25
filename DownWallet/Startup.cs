@@ -17,6 +17,7 @@ using DownWallet.Services.MapperProfiles;
 using System.Threading.Tasks;
 using DownWallet.DataAccess.Repositories;
 using DownWallet.DataAccess;
+using DownWallet.Utilities;
 
 namespace DownWallet
 {
@@ -53,6 +54,8 @@ namespace DownWallet
             services.AddAutoMapper(typeof(RoleProfile));
             services.AddAutoMapper(typeof(WalletOwnerProfile));
             services.AddAutoMapper(typeof(WalletProfile));
+
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

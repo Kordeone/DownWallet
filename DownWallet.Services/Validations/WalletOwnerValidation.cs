@@ -15,8 +15,7 @@ namespace DownWallet.Services.Validations
             RuleFor(walletOwnerDto => walletOwnerDto.UserName).NotNull();
             RuleFor(walletOwnerDto => walletOwnerDto.UserName).MaximumLength(20);
 
-            RuleFor(walletOwnerDto => walletOwnerDto.Password).NotNull();
-            RuleFor(walletOwnerDto => walletOwnerDto.Password).MaximumLength(200);
+            RuleFor(walletOwnerDto => walletOwnerDto.PasswordHash).NotNull();
 
             RuleFor(walletOwnerDto => walletOwnerDto.FirstName).NotNull();
             RuleFor(walletOwnerDto => walletOwnerDto.FirstName).MaximumLength(20);

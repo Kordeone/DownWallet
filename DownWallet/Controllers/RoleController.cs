@@ -36,7 +36,7 @@ namespace DownWallet.Controllers
                 throw new Exception("object didn't validate");
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task Update(RoleDto roleDto, CancellationToken cancellationToken)
         {
             RoleValidation validator = new RoleValidation();
@@ -49,7 +49,7 @@ namespace DownWallet.Controllers
                 throw new Exception("object didn't validate");
         }
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task Delete(RoleDto roleDto, CancellationToken cancellationToken)
         {
             RoleValidation validator = new RoleValidation();
@@ -62,7 +62,7 @@ namespace DownWallet.Controllers
                 throw new Exception("object didn't validate");
         }
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task DeleteById(int roleId, CancellationToken cancellationToken)
         {
             await _roleService.Delete(roleId, cancellationToken);
@@ -71,13 +71,13 @@ namespace DownWallet.Controllers
 
         #region Get Requests
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<RoleDto> Get(int roleId)
         {
             return await _roleService.Get(roleId);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<List<RoleDto>> GetAll()
         {
             return await _roleService.GetAll();

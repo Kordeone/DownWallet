@@ -16,6 +16,7 @@ namespace DownWallet.DataAccess.Repositories
         Task<Wallet> Get(string walletNumber);
         Task<List<Wallet>> GetAll();
         double GetBalance(string walletNumber);
+        WalletOwner GetWalletOwnerInfo(string walletNumber);
         bool IsEnabled(string walletNumber);
         Task Transfer(string sourceNumber, string destinationNumber, double value, CancellationToken cancellationToken, bool saveNow = true);
         Task Update(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true);

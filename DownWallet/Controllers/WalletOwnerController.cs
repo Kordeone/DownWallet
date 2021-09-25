@@ -42,7 +42,7 @@ namespace DownWallet.Controllers
 
 
         #region Put Requests
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task Update(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken)
         {
             WalletOwnerValidation validator = new WalletOwnerValidation();
@@ -54,6 +54,7 @@ namespace DownWallet.Controllers
             else
                 throw new Exception("object didn't validate");
         }
+        [HttpPut("[action]")]
         public async Task UpdatePassword(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken)
         {
             WalletOwnerValidation validator = new WalletOwnerValidation();
@@ -69,7 +70,7 @@ namespace DownWallet.Controllers
 
         #region Delete Requests
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task Delete(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken)
         {
             WalletOwnerValidation validator = new WalletOwnerValidation();
@@ -82,7 +83,7 @@ namespace DownWallet.Controllers
                 throw new Exception("object didn't validate");
         }
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task DeleteById(int walletOwnerId, CancellationToken cancellationToken)
         {
             await _walletOwnerService.Delete(walletOwnerId, cancellationToken);
@@ -93,13 +94,13 @@ namespace DownWallet.Controllers
 
         #region Get Requests
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<WalletOwnerDto> Get(int walletOwnerId)
         {
             return await _walletOwnerService.Get(walletOwnerId);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<List<WalletOwnerDto>> GetAll()
         {
             return await _walletOwnerService.GetAll();

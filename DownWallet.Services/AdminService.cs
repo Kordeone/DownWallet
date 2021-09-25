@@ -22,7 +22,7 @@ namespace DownWallet.Services
         }
         public async Task Add(AdminDto adminDto, CancellationToken cancellationToken)
         {
-            adminDto.Password = PasswordHelper.Hash(adminDto.Password);
+            adminDto.PasswordHash = PasswordHelper.Hash(adminDto.PasswordHash);
             var adminEntity = _mapper.Map<Entities.Admin>(adminDto);
             await _adminRepository.Add(adminEntity, cancellationToken);
         }
@@ -42,7 +42,7 @@ namespace DownWallet.Services
         }
         public async Task UpdatePassword(AdminDto adminDto, CancellationToken cancellationToken)
         {
-            adminDto.Password = PasswordHelper.Hash(adminDto.Password);
+            adminDto.PasswordHash = PasswordHelper.Hash(adminDto.PasswordHash);
             await Update(adminDto, cancellationToken);
         }
         public async Task Delete(AdminDto adminDto, CancellationToken cancellationToken)

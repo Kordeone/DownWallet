@@ -36,7 +36,7 @@ namespace DownWallet.Controllers
         }
 
         #region Put Requests
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task Update(AdminDto adminDto, CancellationToken cancellationToken)
         {
             AdminValidation validator = new AdminValidation();
@@ -48,7 +48,7 @@ namespace DownWallet.Controllers
             else
                 throw new Exception("object didn't validate");
         }
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task UpdatePassword(AdminDto adminDto, CancellationToken cancellationToken)
         {
             AdminValidation validator = new AdminValidation();
@@ -63,7 +63,7 @@ namespace DownWallet.Controllers
         #endregion
 
         #region Delete Requests
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task Delete(AdminDto adminDto, CancellationToken cancellationToken)
         {
             AdminValidation validator = new AdminValidation();
@@ -75,7 +75,7 @@ namespace DownWallet.Controllers
             else
                 throw new Exception("object didn't validate");
         }
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task DeleteById(int adminId, CancellationToken cancellationToken)
         {
             await _adminService.Delete(adminId, cancellationToken);
@@ -84,13 +84,13 @@ namespace DownWallet.Controllers
 
         #region Get Requests
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<AdminDto> Get(int adminId)
         {
             return await _adminService.Get(adminId);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<List<AdminDto>> GetAll()
         {
             return await _adminService.GetAll();

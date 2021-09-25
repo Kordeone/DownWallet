@@ -1,5 +1,6 @@
 ﻿using DownWallet.Entities;
 using DownWallet.Entities.Enums;
+using DownWallet.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -126,6 +127,8 @@ namespace DownWallet.DataAccess.Repositories
             wallet.Result.Balance += value;
             var transaction = new Transaction(Transacts.Deposit);
             wallet.Result.LatestTransactions.Add(transaction);
+            var owner = GetWalletOwnerInfo(walletNumber);
+           await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
 
             if (saveNow)
                 await _appDbContext.SaveChangesAsync(cancellationToken);
@@ -150,6 +153,9 @@ namespace DownWallet.DataAccess.Repositories
 
             if (saveNow)
                 await _appDbContext.SaveChangesAsync(cancellationToken);
+            
+            var owner = GetWalletOwnerInfo(walletNumber);
+            await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
         }
 
         public async Task Transfer(string sourceNumber, string destinationNumber, double value, CancellationToken cancellationToken, bool saveNow = true)
@@ -167,15 +173,25 @@ namespace DownWallet.DataAccess.Repositories
             var sourceWallet = Get(sourceNumber);
             sourceWallet.Result.Balance -= value;
             var srcTransaction = new Transaction(Transacts.Transfer);
+            srcTransaction.WalletNumber = sourceNumber;
             sourceWallet.Result.LatestTransactions.Add(srcTransaction);
-
             var destinationWallet = Get(destinationNumber);
             destinationWallet.Result.Balance += value;
             var dstTransaction = new Transaction(Transacts.Recieve);
+            dstTransaction.WalletNumber = destinationNumber;
             destinationWallet.Result.LatestTransactions.Add(dstTransaction);
 
             if (saveNow)
                 await _appDbContext.SaveChangesAsync(cancellationToken);
+
+            
+            var srcWalletOwner = GetWalletOwnerInfo(sourceNumber);
+            var dstWalletOwner = GetWalletOwnerInfo(destinationNumber);
+
+            await EmailHelper.SendMultipleEmail(
+                    srcWalletOwner.FirstName, srcWalletOwner.Email, Transacts.Transfer.ToString(),
+                    dstWalletOwner.FirstName, dstWalletOwner.Email, Transacts.Recieve.ToString());
+            
         }
 
         public bool IsEnabled(string walletNumber)
@@ -186,6 +202,10 @@ namespace DownWallet.DataAccess.Repositories
                 return true;
             }
             return false;
+        }
+        public WalletOwner GetWalletOwnerInfo(string walletNumber)
+        {
+            return  _appDbContext.WalletOwners.Where(x => x.WalletNumber == walletNumber).SingleOrDefault();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace DownWallet.Entities
         public Wallet()
         {
             Status = Status.Enabled;
+            LatestTransactions = new List<Transaction>();
         }
 
         [Key]

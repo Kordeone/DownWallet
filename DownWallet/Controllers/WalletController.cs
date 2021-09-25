@@ -24,7 +24,7 @@ namespace DownWallet.Controllers
 
         #region Post Requests
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task Add(WalletDto walletDto, CancellationToken cancellationToken)
         {
             WalletValidation validator = new WalletValidation();
@@ -37,7 +37,7 @@ namespace DownWallet.Controllers
                 throw new Exception("object didn't validate");
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task ChangeStatus(StatusDto statusDto, CancellationToken cancellationToken)
         {
             StatusValidation validator = new StatusValidation();
@@ -50,7 +50,7 @@ namespace DownWallet.Controllers
                 throw new Exception("object didn't validate");
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task Deposit(string walletNumber, double value, CancellationToken cancellationToken)
         {
             await _walletService.Deposit(walletNumber, value, cancellationToken);
@@ -62,7 +62,7 @@ namespace DownWallet.Controllers
             await _walletService.Withdraw(walletNumber, value, cancellationToken);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task Transfer(string srcWalletNumber, string dstWalletNumber, double value, CancellationToken cancellationToken)
         {
                 await _walletService.Transfer(srcWalletNumber, dstWalletNumber, value, cancellationToken);
@@ -72,7 +72,7 @@ namespace DownWallet.Controllers
 
         #region Put Requests
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public async Task Update(WalletDto walletDto, CancellationToken cancellationToken)
         {
             WalletValidation validator = new WalletValidation();
@@ -89,7 +89,7 @@ namespace DownWallet.Controllers
 
         #region Delete Requests
 
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task Delete(WalletDto walletDto, CancellationToken cancellationToken)
         {
             WalletValidation validator = new WalletValidation();
@@ -101,7 +101,7 @@ namespace DownWallet.Controllers
             else
                 throw new Exception("object didn't validate");
         }
-        [HttpDelete]
+        [HttpDelete("[action]")]
         public async Task DeleteById(int adminId, CancellationToken cancellationToken)
         {
             await _walletService.Delete(adminId, cancellationToken);
@@ -111,25 +111,25 @@ namespace DownWallet.Controllers
 
         #region Get Requests
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<WalletDto> GetById(int walletId)
         {
             return await _walletService.GetById(walletId);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<WalletDto> GetByWalletNumber(string walletNumber)
         {
             return await _walletService.GetByWalletNumber(walletNumber);
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public async Task<List<WalletDto>> GetAll()
         {
             return await _walletService.GetAll();
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public double GetBalance(string walletNumber)
         {
             return _walletService.GetBalance(walletNumber);

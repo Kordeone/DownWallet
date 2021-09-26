@@ -150,6 +150,7 @@ namespace DownWallet.DataAccess.Repositories
             //    .UsingTemplate(emailTemplate, new { owner.FirstName, action });
 
             //await newEmail.SendAsync();
+
             await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
 
 

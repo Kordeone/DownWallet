@@ -18,6 +18,7 @@ namespace DownWallet.Utilities
 
             var sender = new SmtpSender(() => new SmtpClient("smtp.gmail.com")
             {
+                UseDefaultCredentials = false,
                 EnableSsl = true,
                 Credentials = new NetworkCredential("downwallettest@gmail.com", "dwnwlttst1234"),
                 Port = 587
@@ -30,7 +31,7 @@ namespace DownWallet.Utilities
 
 
             Email.DefaultSender = sender;
-            Email.DefaultRenderer = new RazorRenderer();
+            //Email.DefaultRenderer = new RazorRenderer();
 
             var email = await Email
                .From("downwallettest@gmail.com")
@@ -51,11 +52,10 @@ namespace DownWallet.Utilities
             });
 
             Email.DefaultSender = sender;
-            Email.DefaultRenderer = new RazorRenderer();
 
             StringBuilder srcTemplate = new();
             srcTemplate.AppendLine("<h1>Dear " + srcName + ", </h1>");
-            srcTemplate.AppendLine("<p>New" + srcAction + " transaction happened with your account! </p>");
+            srcTemplate.AppendLine("<p>New " + srcAction + " transaction happened with your account! </p>");
             srcTemplate.AppendLine("The DownWallet Team.");
 
             StringBuilder dstTemplate = new();

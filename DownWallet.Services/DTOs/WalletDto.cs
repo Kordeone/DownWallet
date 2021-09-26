@@ -10,8 +10,9 @@ namespace DownWallet.Services.DTOs
 {
     public class WalletDto
     {
-        public WalletDto(string walletNumber)
+        public WalletDto(int ownerId,string walletNumber)
         {
+            OwnerId = ownerId;
             WalletNumber = walletNumber;
             Balance = 30000;
         }

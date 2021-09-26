@@ -33,9 +33,10 @@ namespace DownWallet.Controllers
             {
                 walletOwnerDto.WalletNumber = DateTime.UtcNow.ToString("yyyyMMddHHmmssff");
                 await _walletOwnerService.Add(walletOwnerDto, cancellationToken);
-                await _walletOwnerService.Get();
 
-                var wallet = new WalletDto(walletOwnerDto.WalletNumber);
+                var wallet = new WalletDto(
+                    _walletOwnerService.GetByWalletNumber(walletOwnerDto.WalletNumber).Result.Id
+                ,walletOwnerDto.WalletNumber);
                 await _walletService.Add(wallet, cancellationToken);
             }
             else
@@ -105,7 +106,7 @@ namespace DownWallet.Controllers
         [HttpGet("[action]")]
         public async Task<WalletOwnerDto> GetByWalletNumber(string walletOwnerWalletNumber)
         {
-            return await _walletOwnerService.Get(walletOwnerWalletNumber);
+            return await _walletOwnerService.GetByWalletNumber(walletOwnerWalletNumber);
         }
 
         [HttpGet("[action]")]

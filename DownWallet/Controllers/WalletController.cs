@@ -24,18 +24,18 @@ namespace DownWallet.Controllers
 
         #region Post Requests
 
-        [HttpPost("[action]")]
-        public async Task Add(WalletDto walletDto, CancellationToken cancellationToken)
-        {
-            WalletValidation validator = new WalletValidation();
-            ValidationResult result = validator.Validate(walletDto);
-            if (result.IsValid)
-            {
-                await _walletService.Add(walletDto, cancellationToken);
-            }
-            else
-                throw new Exception("object didn't validate");
-        }
+        //[HttpPost("[action]")]
+        //public async Task Add(WalletDto walletDto, CancellationToken cancellationToken)
+        //{
+        //    WalletValidation validator = new WalletValidation();
+        //    ValidationResult result = validator.Validate(walletDto);
+        //    if (result.IsValid)
+        //    {
+        //        await _walletService.Add(walletDto, cancellationToken);
+        //    }
+        //    else
+        //        throw new Exception("object didn't validate");
+        //}
 
         [HttpPost("[action]")]
         public async Task ChangeStatus(StatusDto statusDto, CancellationToken cancellationToken)

@@ -8,7 +8,7 @@ namespace DownWallet.Services
 {
     public interface IWalletService
     {
-        Task Add(WalletDto walletDto, CancellationToken cancellationToken);
+        //Task Add(WalletDto walletDto, CancellationToken cancellationToken);
         Task ChangeStatus(string walletnumber, Status status, CancellationToken cancellationToken);
         Task Delete(int walletId, CancellationToken cancellationToken);
         Task Delete(WalletDto walletDto, CancellationToken cancellationToken);

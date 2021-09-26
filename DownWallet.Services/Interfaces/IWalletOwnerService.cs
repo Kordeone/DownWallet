@@ -11,7 +11,7 @@ namespace DownWallet.Services
         Task Delete(int walletOwnerId, CancellationToken cancellationToken);
         Task Delete(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken);
         Task<WalletOwnerDto> Get(int walletOwnerId);
-        Task<WalletOwnerDto> GetByWalletNumber(int walletOwnerWalletNumber);
+        Task<WalletOwnerDto> GetByWalletNumber(string walletOwnerWalletNumber);
         Task<List<WalletOwnerDto>> GetAll();
         Task Update(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken);
         Task UpdatePassword(WalletOwnerDto walletOwnerDto, CancellationToken cancellationToken);

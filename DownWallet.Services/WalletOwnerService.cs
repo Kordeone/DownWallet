@@ -34,7 +34,7 @@ namespace DownWallet.Services
         {
             return _mapper.Map<WalletOwnerDto>(await _walletOwnerRepository.Get(walletOwnerId));
         }
-        public async Task<WalletOwnerDto> GetByWalletNumber(int walletOwnerWalletNumber)
+        public async Task<WalletOwnerDto> GetByWalletNumber(string walletOwnerWalletNumber)
         {
             return _mapper.Map<WalletOwnerDto>(await _walletOwnerRepository.Get(walletOwnerWalletNumber));
         }

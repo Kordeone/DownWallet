@@ -32,9 +32,11 @@ namespace DownWallet.Controllers
             if (result.IsValid)
             {
                 walletOwnerDto.WalletNumber = DateTime.UtcNow.ToString("yyyyMMddHHmmssff");
-                var wallet = new WalletDto(walletOwnerDto.Id, walletOwnerDto.WalletNumber);
-                await _walletService.Add(wallet, cancellationToken);
                 await _walletOwnerService.Add(walletOwnerDto, cancellationToken);
+                await _walletOwnerService.Get();
+
+                var wallet = new WalletDto(walletOwnerDto.WalletNumber);
+                await _walletService.Add(wallet, cancellationToken);
             }
             else
                 throw new Exception("object didn't validate");
@@ -98,6 +100,12 @@ namespace DownWallet.Controllers
         public async Task<WalletOwnerDto> Get(int walletOwnerId)
         {
             return await _walletOwnerService.Get(walletOwnerId);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<WalletOwnerDto> GetByWalletNumber(string walletOwnerWalletNumber)
+        {
+            return await _walletOwnerService.Get(walletOwnerWalletNumber);
         }
 
         [HttpGet("[action]")]

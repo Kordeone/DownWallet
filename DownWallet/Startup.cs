@@ -55,7 +55,9 @@ namespace DownWallet
             services.AddAutoMapper(typeof(WalletOwnerProfile));
             services.AddAutoMapper(typeof(WalletProfile));
 
-
+            services.AddFluentEmail("downwallettest@gmail.com")
+                .AddRazorRenderer()
+                .AddSmtpSender("smtp.google.com", 587, "downwallettest@gmail.com", "dwnwlttst1234");
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

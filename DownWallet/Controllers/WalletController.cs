@@ -56,7 +56,7 @@ namespace DownWallet.Controllers
             await _walletService.Deposit(walletNumber, value, cancellationToken);
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task Withdraw(string walletNumber, double value, CancellationToken cancellationToken)
         {
             await _walletService.Withdraw(walletNumber, value, cancellationToken);

@@ -36,6 +36,11 @@ namespace DownWallet.DataAccess.Repositories
         {
             return await _entity.FindAsync(userId);
         }
+        public async Task<WalletOwner> Get(string walletOwnerWalletNumber)
+        {
+            return await _entity.Where(x => x.WalletNumber == walletOwnerWalletNumber).SingleOrDefaultAsync();
+        }
+
 
         public async Task<List<WalletOwner>> GetAll()
         {

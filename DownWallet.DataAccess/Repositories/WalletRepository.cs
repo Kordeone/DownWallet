@@ -1,6 +1,7 @@
 ﻿using DownWallet.Entities;
 using DownWallet.Entities.Enums;
 using DownWallet.Utilities;
+using FluentEmail.Core;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,25 +15,29 @@ namespace DownWallet.DataAccess.Repositories
     public class WalletRepository : IWalletRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IFluentEmail _fluentEmail;
         DbSet<Wallet> _entity;
-        public WalletRepository(AppDbContext dbContext)
+        public WalletRepository(AppDbContext dbContext, IFluentEmail fluentEmail)
         {
             _appDbContext = dbContext;
+            _fluentEmail = fluentEmail;
             _entity = dbContext.Set<Wallet>();
         }
 
-        public async Task Add(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true)
-        {
-            if (wallet == null)
-            {
-                throw new ArgumentNullException();
-            }
+        //Adding wallet is only possible when submiting a new account
 
-            await _entity.AddAsync(wallet, cancellationToken);
+        //public async Task Add(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true)
+        //{
+        //    if (wallet == null)
+        //    {
+        //        throw new ArgumentNullException();
+        //    }
 
-            if (saveNow)
-                await _appDbContext.SaveChangesAsync(cancellationToken);
-        }
+        //    await _entity.AddAsync(wallet, cancellationToken);
+
+        //    if (saveNow)
+        //        await _appDbContext.SaveChangesAsync(cancellationToken);
+        //}
 
         public async Task<Wallet> Get(int walletId)
         {
@@ -127,11 +132,27 @@ namespace DownWallet.DataAccess.Repositories
             wallet.Result.Balance += value;
             var transaction = new Transaction(Transacts.Deposit);
             wallet.Result.LatestTransactions.Add(transaction);
-            var owner = GetWalletOwnerInfo(walletNumber);
-           await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
 
             if (saveNow)
                 await _appDbContext.SaveChangesAsync(cancellationToken);
+
+            var owner = GetWalletOwnerInfo(walletNumber);
+
+            var emailTemplate =
+             @" < h1 > Dear  + @Model.FirstName + , </ h1 > 
+            <p>New + @Model.Action +  transaction happened with your account! </p>
+            <p>The DownWallet Team.</p>";
+
+            var action = Transacts.Deposit.ToString();
+            var newEmail = _fluentEmail
+                .To(owner.Email)
+                .Subject("New Transaction")
+                .UsingTemplate(emailTemplate, new { owner.FirstName, action });
+
+            await newEmail.SendAsync();
+            //await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
+
+
         }
 
         public async Task Withdraw(string walletNumber, double value, CancellationToken cancellationToken, bool saveNow = true)
@@ -153,7 +174,7 @@ namespace DownWallet.DataAccess.Repositories
 
             if (saveNow)
                 await _appDbContext.SaveChangesAsync(cancellationToken);
-            
+
             var owner = GetWalletOwnerInfo(walletNumber);
             await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
         }
@@ -184,14 +205,14 @@ namespace DownWallet.DataAccess.Repositories
             if (saveNow)
                 await _appDbContext.SaveChangesAsync(cancellationToken);
 
-            
+
             var srcWalletOwner = GetWalletOwnerInfo(sourceNumber);
             var dstWalletOwner = GetWalletOwnerInfo(destinationNumber);
 
             await EmailHelper.SendMultipleEmail(
                     srcWalletOwner.FirstName, srcWalletOwner.Email, Transacts.Transfer.ToString(),
                     dstWalletOwner.FirstName, dstWalletOwner.Email, Transacts.Recieve.ToString());
-            
+
         }
 
         public bool IsEnabled(string walletNumber)
@@ -205,7 +226,7 @@ namespace DownWallet.DataAccess.Repositories
         }
         public WalletOwner GetWalletOwnerInfo(string walletNumber)
         {
-            return  _appDbContext.WalletOwners.Where(x => x.WalletNumber == walletNumber).SingleOrDefault();
+            return _appDbContext.WalletOwners.Where(x => x.WalletNumber == walletNumber).SingleOrDefault();
         }
     }
 }

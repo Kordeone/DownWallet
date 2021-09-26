@@ -23,11 +23,11 @@ namespace DownWallet.Services
             _mapper = mapper;
         }
 
-        //public async Task Add(WalletDto walletDto, CancellationToken cancellationToken)
-        //{
-        //    var walletEntity = _mapper.Map<Wallet>(walletDto);
-        //    await _walletRepository.Add(walletEntity, cancellationToken);
-        //}
+        public async Task Add(WalletDto walletDto, CancellationToken cancellationToken)
+        {
+            var walletEntity = _mapper.Map<Wallet>(walletDto);
+            await _walletRepository.Add(walletEntity, cancellationToken);
+        }
         public async Task<WalletDto> GetById(int walletId)
         {
             return _mapper.Map<WalletDto>(await _walletRepository.Get(walletId));

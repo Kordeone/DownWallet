@@ -24,20 +24,20 @@ namespace DownWallet.DataAccess.Repositories
             _entity = dbContext.Set<Wallet>();
         }
 
-        //Adding wallet is only possible when submiting a new account
+        //Adding wallet must only be possible when submiting a new account
 
-        //public async Task Add(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true)
-        //{
-        //    if (wallet == null)
-        //    {
-        //        throw new ArgumentNullException();
-        //    }
+        public async Task Add(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true)
+        {
+            if (wallet == null)
+            {
+                throw new ArgumentNullException();
+            }
 
-        //    await _entity.AddAsync(wallet, cancellationToken);
+            await _entity.AddAsync(wallet, cancellationToken);
 
-        //    if (saveNow)
-        //        await _appDbContext.SaveChangesAsync(cancellationToken);
-        //}
+            if (saveNow)
+                await _appDbContext.SaveChangesAsync(cancellationToken);
+        }
 
         public async Task<Wallet> Get(int walletId)
         {
@@ -138,19 +138,19 @@ namespace DownWallet.DataAccess.Repositories
 
             var owner = GetWalletOwnerInfo(walletNumber);
 
-            var emailTemplate =
-             @" < h1 > Dear  + @Model.FirstName + , </ h1 > 
-            <p>New + @Model.Action +  transaction happened with your account! </p>
-            <p>The DownWallet Team.</p>";
+            //var emailTemplate =
+            // @" < h1 > Dear  + @Model.FirstName + , </ h1 > 
+            //<p>New + @Model.Action +  transaction happened with your account! </p>
+            //<p>The DownWallet Team.</p>";
 
-            var action = Transacts.Deposit.ToString();
-            var newEmail = _fluentEmail
-                .To(owner.Email)
-                .Subject("New Transaction")
-                .UsingTemplate(emailTemplate, new { owner.FirstName, action });
+            //var action = Transacts.Deposit.ToString();
+            //var newEmail = _fluentEmail
+            //    .To(owner.Email)
+            //    .Subject("New Transaction")
+            //    .UsingTemplate(emailTemplate, new { owner.FirstName, action });
 
-            await newEmail.SendAsync();
-            //await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
+            //await newEmail.SendAsync();
+            await EmailHelper.SendSingleEmail(owner.FirstName, owner.Email, Transacts.Deposit.ToString());
 
 
         }

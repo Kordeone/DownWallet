@@ -8,7 +8,7 @@ namespace DownWallet.DataAccess.Repositories
 {
     public interface IWalletRepository
     {
-        //Task Add(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true);
+        Task Add(Wallet wallet, CancellationToken cancellationToken, bool saveNow = true);
         Task ChangeStatus(string walletNumber, Status status, CancellationToken cancellationToken, bool saveNow = true);
         Task Delete(int walletId, CancellationToken cancellationToken, bool saveNow = true);
         Task Deposit(string walletNumber, double value, CancellationToken cancellationToken, bool saveNow = true);

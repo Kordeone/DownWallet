@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DownWallet.Entities
 {
-    public class Admin : IdentityUser<int>
+    public class Admin : User
     {
         [Required]
         [MaxLength(20)]

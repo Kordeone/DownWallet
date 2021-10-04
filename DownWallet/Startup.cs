@@ -41,13 +41,15 @@ namespace DownWallet
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IWalletOwnerService, WalletOwnerService>();
-            services.AddScoped<IWalletService, WalletService>();
+            services.AddScoped<IWalletService, WalletService>();            
+
 
             //Repositories
             services.AddScoped<IAdminRepository, AdminRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IWalletOwnerRepository, WalletOwnerRepository>();
             services.AddScoped<IWalletRepository, WalletRepository>();
+            //services.AddScoped<IDapperRepository, DapperRepository>();
 
             //Mappers
             services.AddAutoMapper(typeof(AdminProfile));
@@ -63,6 +65,28 @@ namespace DownWallet
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DownWallet", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Token Enter Yours",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        System.Array.Empty<string>()
+                    }
+                });
             });
         }
 

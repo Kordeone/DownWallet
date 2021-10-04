@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DownWallet.Entities
 {
-    public class WalletOwner : IdentityUser<int>
+    public class WalletOwner : User
     {
         public WalletOwner()
         {
